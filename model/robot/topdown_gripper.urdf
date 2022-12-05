@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+
+<robot name="Gripper">
+  <link name="base_link">
+    <inertial>
+      <mass value="0" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_x" type="prismatic">
+    <parent link="base_link" />
+    <child link="link_x" />
+    <axis xyz="1 0 0" />
+    <limit effort="10000.0" lower="-0.5" upper="0.5" velocity="0.2" />
+  </joint>
+
+  <link name="link_x">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_y" type="prismatic">
+    <parent link="link_x" />
+    <child link="link_y" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000.0" lower="-0.5" upper="0.5" velocity="0.2" />
+  </joint>
+
+  <link name="link_y">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_z" type="prismatic">
+    <parent link="link_y" />
+    <child link="link_z" />
+    <axis xyz="0 0 1" />
+    <limit effort="10000.0" lower="-0.5" upper="0.5" velocity="0.2" />
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <link name="link_z">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_roll" type="revolute">
+    <parent link="link_z" />
+    <child link="link_roll" />
+    <axis xyz="1 0 0" />
+    <!-- pitch limit is from 0 to 25 degree -->
+    <limit lower="-2" upper="2" velocity="3.14" effort="10000" />
+  </joint>
+
+  <link name="link_roll">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_pitch" type="revolute">
+    <parent link="link_roll" />
+    <child link="link_pitch" />
+    <axis xyz="0 1 0" />
+    <limit lower="-2" upper="2" velocity="3.14" effort="10000" />
+  </joint>
+
+  <link name="link_pitch">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_yaw" type="revolute">
+    <parent link="link_pitch" />
+    <child link="link_gripper_base" />
+    <axis xyz="0 0 1" />
+    <limit lower="-3.14" upper="3.14" velocity="3.14" effort="10000" />
+  </joint>
+  
+  <link name="link_gripper_base">
+    <visual>
+      <geometry>
+        <box size="0 0 0"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0" />
+      <inertia ixx = "0" ixy = "0" ixz = "0"
+               iyx = "0" iyy = "0" iyz = "0"
+               izx = "0" izy = "0" izz = "0" />
+    </inertial>
+  </link>
+  
+  <joint name="joint_right_finger" type="prismatic">
+    <parent link="link_gripper_base" />
+    <child link="link_right_finger" />
+    <origin xyz="0 -0.0025 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" lower="-0.04" upper="0" velocity="0.1" />
+  </joint>
+
+  <link name="link_right_finger">
+    <contact>
+      <friction_anchor />
+      <stiffness value="30000.0" />
+      <damping value="0" />
+      <rolling_friction value="0.03" />
+      <spinning_friction value="0.03" />
+      <lateral_friction value="1" />
+    </contact>
+    <visual>
+      <geometry>
+        <box size="0.002 0.005 0.08" />
+      </geometry>
+      <origin xyz="0 0 0.04" />
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.002 0.005 0.08" />
+      </geometry>
+      <origin xyz="0 0 0.04" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="joint_left_finger" type="prismatic">
+    <parent link="link_gripper_base" />
+    <child link="link_left_finger" />
+    <origin xyz="0 0.0025 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="10000" lower="0" upper="0.04" velocity="0.1" />
+  </joint>
+
+  <link name="link_left_finger">
+    <contact>
+      <friction_anchor />
+      <stiffness value="30000.0" />
+      <damping value="0" />
+      <rolling_friction value="0.03" />
+      <spinning_friction value="0.03" />
+      <lateral_friction value="1" />
+    </contact>
+    <visual>
+      <geometry>
+        <box size="0.002 0.005 0.08" />
+      </geometry>
+      <origin xyz="0 0 0.04" />
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.002 0.005 0.08" />
+      </geometry>
+      <origin xyz="0 0 0.04" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0" ixy="0" ixz="0" iyx="0" iyy="0" iyz="0" izx="0" izy="0" izz="0" />
+    </inertial>
+  </link>
+  
+</robot>
+
